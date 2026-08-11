@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep">
-    <img src="https://raw.githubusercontent.com/wanshuiyin/Auto-claude-code-research-in-sleep/main/docs/aris_logo.svg" alt="ARIS —— Adversarial Research in Sleep · Claude Code × GPT · speed × rigor" width="75%">
+    <img src="https://raw.githubusercontent.com/wanshuiyin/Auto-claude-code-research-in-sleep/main/docs/aris_logo.svg" alt="ARIS —— Adversarial Research in Sleep · Claude Code × GPT · speed × rigor" width="85%">
   </a>
 </p>
 
