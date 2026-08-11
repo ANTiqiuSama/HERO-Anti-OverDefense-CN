@@ -2,8 +2,9 @@
 
 [`../RULES.md`](../RULES.md) is the canonical copy of the block. The READMEs
 repeat it so the front page is usable without a second click — two copies per
-language, and yes, that is a duplication this repository would flag in someone
-else's project. It is kept deliberately, and RULES.md is the one to edit first.
+language, which is a real synchronization cost, accepted here in exchange for
+that. It has already been paid once: the README copies had silently drifted from
+RULES.md before anyone noticed. So edit RULES.md first, then sync the READMEs.
 Paste the block into the file your agent already reads on every turn.
 
 | Host | File it reads | Scope |

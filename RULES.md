@@ -51,9 +51,10 @@ direction; say it went slightly east and it relocates to the Atlantic. Also:
 answering the question the prompt's phrasing implied rather than the question
 asked.
 
-Same root — optimise for not being blamed — but a different symptom, and none of
-the four letters fits it. It is catalogued here as a sibling, not folded in.
-Blurring the taxonomy is how a case catalogue stops being useful.
+It fits the same hypothesis — optimising for not being blamed — but it is a
+different symptom, and none of the four letters covers it. It is catalogued here
+as a sibling, not folded in. Blurring the taxonomy is how a case catalogue stops
+being useful.
 
 ---
 

@@ -190,8 +190,9 @@ same look repeated. Cost scales with agents; information does not.
 
 ## Sibling: over-correction (not a HERO family)
 
-Recorded because it shows up in the same reports, with the same root — optimise
-for not being blamed — but a different symptom. See RULES.
+Recorded because it shows up in the same reports and fits the same hypothesised
+root — optimising for not being blamed — but it is a different symptom, and none
+of the four letters covers it. See RULES.
 
 ### SIB-001 · Abandoning a direction on one objection
 **Observed:** raising a single problem with a plan causes the agent to apologise
