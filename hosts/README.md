@@ -11,11 +11,14 @@ Paste the block into the file your agent already reads on every turn.
 |---|---|---|
 | Claude Code | `CLAUDE.md` in the project root, or `~/.claude/CLAUDE.md` | project / global |
 | Codex | `AGENTS.md` in the project root | project |
+| Antigravity | `AGENTS.md` in the project root, or `~/.gemini/AGENTS.md` | project / global |
 | GitHub Copilot | `.github/copilot-instructions.md` | repository |
 | Cursor | `.cursor/rules/*.mdc`, or a legacy `.cursorrules` | project |
 | Windsurf | `.windsurfrules` | project |
 | Gemini CLI | `GEMINI.md` | project |
 | Anything else | whatever that host loads unprompted | — |
+
+Codex and Antigravity read the same filename, so one `AGENTS.md` serves both.
 
 ## Why there are no ready-made files here
 

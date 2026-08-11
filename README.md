@@ -197,6 +197,23 @@ not who hit it.
 
 ---
 
+## 🧩 Works with
+
+**Claude Code · Codex · Antigravity · Cursor · GitHub Copilot · Windsurf · Gemini CLI**
+— and anything else that loads a config file without being asked.
+
+There is nothing to install and no version to track. The block is plain text in
+whichever file your agent already reads on every turn, so a host this list has
+never heard of works the same way. Codex and Antigravity both read `AGENTS.md`,
+so one file serves both. See [`hosts/`](hosts/README.md) for the exact filename
+each one loads and where to put the block inside it.
+
+If you run a second model as a reviewer, give it the block too — a reviewer told
+to be adversarial, handed repository access and asked to propose fixes, is the
+single most productive source of the behaviour catalogued here.
+
+---
+
 ## 🔭 Related projects
 
 - **[ARIS](https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep)** — overnight autonomous ML research via cross-model adversarial review. A version of this contract ships inside its reviewer prompts.

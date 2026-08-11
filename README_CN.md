@@ -137,6 +137,17 @@
 
 ---
 
+## 🧩 适配于
+
+**Claude Code · Codex · Antigravity · Cursor · GitHub Copilot · Windsurf · Gemini CLI**
+—— 以及任何"不用你喊、自己就会加载配置文件"的 agent。
+
+没有东西要安装,也没有版本要跟。这个块就是一段纯文本,放进你的 agent 每轮都会读的那个文件里就行 —— 所以哪怕是这份名单上没有的 host,用法也一样。Codex 和 Antigravity 读的是同一个 `AGENTS.md`,一份文件两边通用。每个 host 具体读哪个文件名、块该放在文件里的什么位置,见 [`hosts/`](hosts/README.md)。
+
+如果你还跑了第二个模型当审阅者,**更要给它一份** —— 一个被要求"对抗性审阅"、拿到仓库访问权、还被要求提修法的 reviewer,是本案例库里这些行为最高产的来源。
+
+---
+
 ## 🔭 相关项目
 
 - **[ARIS](https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep)** —— 跨模型对抗审阅驱动的过夜自主 ML 研究。这份契约的一个版本已经内置在它的审阅 prompt 里。
