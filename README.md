@@ -1,0 +1,205 @@
+# HERO — Anti-OverDefense 🧱
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat)](LICENSE) · [![README 中文](https://img.shields.io/badge/README-%E4%B8%AD%E6%96%87-blue?style=flat)](README_CN.md) · [![Cases](https://img.shields.io/badge/📓_Case_catalogue-open-7C3AED?style=flat)](cases/README.md) · [![Paste-in block](https://img.shields.io/badge/⚡_Paste--in_block-RULES.md-2E7D32?style=flat)](RULES.md) · [![ARIS stars](https://img.shields.io/github/stars/wanshuiyin/Auto-claude-code-research-in-sleep?style=flat&logo=github&logoColor=white&color=gold&label=ARIS%20%E2%98%85)](https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep)
+
+<div align="center">
+
+### 🧱 You asked for a feature. It built a fortress around the feature, and never got to the feature.
+
+***你让它写个功能,它给你造了座堡垒,然后功能一直没写完。***
+
+</div>
+
+> 🧬 **Extracted from [ARIS](https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep)** (~13.7k★ · HuggingFace Daily Papers #1 · 82 skills). ARIS runs a cross-model reviewer on every piece of work it produces. That reviewer is genuinely good — and it also spent a measurable share of its output proposing hashes nobody reads, lints for rules deliberately left as prose, and hardening for races that close in milliseconds. **HERO is the contract that keeps the value and drops the tax**, generalised out of ARIS so it works with any coding agent.
+
+The shapes look like an agent optimising for *not being blamed* rather than for
+*the work being good* — a hypothesis that fits what we observed, not an
+established account of how these models are trained. Either way the shapes are
+real, there are four of them — **H**ashing, **E**dge cases, **R**ubrics,
+**O**verbuild — and naming them makes it possible to say *which one just
+happened* instead of arguing about vibes.
+
+This repository is a short block you paste into your agent's config, plus a
+catalogue of the behaviours it is meant to stop.
+
+---
+
+## 🧭 What's inside
+
+| | |
+|---|---|
+| **[`RULES.md`](RULES.md)** | The contract, in English and Chinese, plus the three places the line is genuinely hard to draw. |
+| **[`cases/`](cases/README.md)** | Observed behaviours: what was asked, what the agent did, why it is disproportionate, what proportionate looks like. |
+| **[`hosts/`](hosts/README.md)** | Where to paste it — Claude Code, Codex, Copilot, Cursor, Windsurf, Gemini CLI. |
+
+---
+
+## 🚀 Quickstart
+
+Paste this into the file your agent already reads on every turn — `CLAUDE.md`,
+`AGENTS.md`, `.github/copilot-instructions.md`, `.cursorrules`. See
+[`hosts/`](hosts/README.md) for the full table.
+
+```
+=== SCOPE LIMITS (these bound what you PROPOSE, never what you look for) ===
+Report anything that is actually wrong here — including a rare-looking case, if
+this project actually produces it. Then keep the fix in scope:
+1. This is not a security paper. Verification is welcome; over-defense is not.
+   Unless this project states otherwise, assume a cooperating operator on their
+   own machine; if it has a real adversary, it will say so and that scope wins.
+2. Do not add hashes, checksums or fingerprints unless the hash replaces a
+   materially more expensive operation AND its result changes what happens next.
+3. No defensive scaffolding: no feature flags, migration frameworks, compat
+   layers or wrappers for cases that do not occur here.
+4. No corner-case obsession: exotic encodings, symlink races, RTL text and
+   millisecond races are out of scope unless the case is reachable through this
+   project's supported use — its documented inputs, its published interface, its
+   real data. Reachable is enough; you do not need a reproduction. Constructible
+   in principle is not enough.
+5. Where judgement is needed, judge. Do not replace it with a scoring table, a
+   checklist, or a re-verification loop over something already settled.
+Before running any check, answer: what specific failure would this detect, and
+what would I do differently if it occurred? No answer means do not run it.
+Say plainly when something is correct. Do not manufacture findings.
+```
+
+⚠️ **Put it where it is always loaded.** An invoked copy still works when you
+invoke it — but it is absent exactly on the long unattended runs, where nobody is
+there to invoke it and where this failure costs you a night.
+
+---
+
+## 🔤 The four families
+
+### 🔐 H — Hashing
+
+Checksums, fingerprints and digests added where nothing reads them.
+
+A hash earns its place when it **replaces a materially more expensive operation**
+*and* its result changes what happens next. Comparing a digest to avoid pulling
+an unchanged large file back into context is a real saving. Hashing every row of
+a spreadsheet to answer what ordinary cell comparison already answers is not —
+and note that the second one *does* read its hashes, which is why "something
+reads it" is too weak a test.
+
+### 🧊 E — Edge cases
+
+Defending inputs that do not occur **here**.
+
+That word is the entire rule. A rare-sounding case this project actually produces
+is a real bug and must be reported. A hostile actor who never visits is not.
+
+### 📋 R — Rubrics
+
+Judgement replaced by machinery — scoring tables, checklists, re-verification
+loops over something already settled.
+
+The characteristic symptom: a night of work, a complete audit trail, and no
+feature.
+
+### 🏗️ O — Overbuild
+
+Scaffolding, feature flags, migration frameworks and compatibility layers built
+for a future nobody asked for. Guards guarding guards.
+
+### 🪞 Sibling: over-correction
+
+Point out one flaw and the agent reverses the whole direction; say it went
+slightly east and it relocates to the Atlantic. Same root, different symptom,
+and none of the four letters fits it — so it is catalogued **outside** HERO.
+Blurring the taxonomy is how a case catalogue stops being useful.
+
+---
+
+## 🎯 Why this exists
+
+Asked to diagnose itself, the model put it better than we did:
+
+> My own failure mode here is turning "could improve confidence" into "therefore
+> must be built and checked." That silently promotes optional uncertainty
+> reduction into the main task.
+
+That is the whole disease in two sentences. Optional uncertainty reduction is
+infinite; the task is not.
+
+---
+
+## ⚖️ What it bounds — and what it must never suppress
+
+**These limits bound the fix, never the search.** Getting this backwards makes
+the contract actively harmful.
+
+One of the defects that motivated this repository was a scheduler that hung
+because a dependency written as a bare string, where a list was expected, got
+iterated character by character. That sounds like a rare input-shape edge case —
+except the project's **own documentation example** used the bare-string form, so
+every user following the docs produced it.
+
+> The test is not *how rare does this sound*. It is **does this happen here**.
+
+The same cut separates a smoke test from test theatre. A smoke test is not
+over-defense; it is the cheapest contact with reality, and skipping it is how the
+worst bugs survive. Another defect in the same repository killed every training
+job at its first sixty-second poll and then looped forever — it shipped because
+the code had never been run once end to end, while carrying detailed prose about
+its own state machine.
+
+So the rule is not "test less". It is the question in the block: *what specific
+failure would this detect, and what would I do differently?* A one-line change
+followed by the full suite cannot answer it. A first job surviving its first
+poll, when the polling code is exactly what is under suspicion, answers it
+immediately.
+
+---
+
+## ⚠️ Honest limitations
+
+**It helps; it is not a switch.** Asked in the original community discussion
+whether writing these rules into a markdown file actually works, the most-agreed
+answer was *"it helps a little"*. That is the right expectation. Some runs will
+still fortify.
+
+**The model can decline.** There are reports of the agent replying that where
+these instructions conflict with a higher-priority system constraint, the system
+constraint still wins. This *is* configuration — but configuration by defeasible
+natural-language instruction, which a stronger instruction can override, not
+enforcement.
+
+**Model choice is also a lever.** Several reports describe switching to a
+different or earlier model and the problem simply going away. If a task is
+especially sensitive to this failure, that may be more direct than any prompt.
+
+**This is not about making the agent do less work.** Every rule here is about
+spending the work on the thing that was asked for. The catalogue exists so that
+"that's over-defense" is a claim you can check against a specific recognisable
+shape — not a way to wave away a finding you would rather not deal with.
+
+---
+
+## 🤝 Contributing
+
+A useful entry has four fields: **what was asked**, **what the agent did**, **why
+that is disproportionate**, **what proportionate looks like**. The last one is
+the one that matters — a catalogue of complaints without remedies is a wall, not
+a resource.
+
+Counterexamples are wanted too. Four entries exist precisely because a flat
+reading of the rules would have been wrong — a hash that pays for itself, a
+rare-looking bug the project's own docs produced, a smoke run that was owed, and
+a broad regression run whose whole point was not knowing what would break.
+
+No usernames, no quoted complaints, no attribution — what matters is the shape,
+not who hit it.
+
+---
+
+## 🔭 Related projects
+
+- **[ARIS](https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep)** — overnight autonomous ML research via cross-model adversarial review. A version of this contract ships inside its reviewer prompts.
+- **[Anti-Autoresearch](https://github.com/wanshuiyin/Anti-Autoresearch)** — the same method pointed at research integrity: observe real failures, name them as families, ship a contract.
+
+---
+
+## 📖 License
+
+MIT.

@@ -1,0 +1,47 @@
+# Installing the block
+
+[`../RULES.md`](../RULES.md) is the canonical copy of the block. The READMEs
+repeat it so the front page is usable without a second click — two copies per
+language, and yes, that is a duplication this repository would flag in someone
+else's project. It is kept deliberately, and RULES.md is the one to edit first.
+Paste the block into the file your agent already reads on every turn.
+
+| Host | File it reads | Scope |
+|---|---|---|
+| Claude Code | `CLAUDE.md` in the project root, or `~/.claude/CLAUDE.md` | project / global |
+| Codex | `AGENTS.md` in the project root | project |
+| GitHub Copilot | `.github/copilot-instructions.md` | repository |
+| Cursor | `.cursor/rules/*.mdc`, or a legacy `.cursorrules` | project |
+| Windsurf | `.windsurfrules` | project |
+| Gemini CLI | `GEMINI.md` | project |
+| Anything else | whatever that host loads unprompted | — |
+
+## Why there are no ready-made files here
+
+A directory of six near-identical host files would be six more copies to keep in
+sync, added for a convenience nobody asked for. That is `HERO-O`. A table of
+destinations costs a reader ten seconds instead.
+
+## Put it where it is always loaded
+
+An invoked copy is not useless, but it is absent exactly when you need it most:
+on the long unattended runs, where nobody is there to invoke it and where this
+failure costs a night. Always-loaded placement buys coverage — it does not buy
+compliance.
+
+## Placement inside the file
+
+Near the top, in its own section, above any project-specific instructions. Two
+reasons: instructions competing for the same decision tend to resolve toward
+whichever is more specific, and the block is deliberately general — it should be
+the frame, not a footnote. And it survives edits to the project-specific part
+below it.
+
+## If you also review with a second model
+
+If your workflow has one model reviewing another's work, the reviewer needs the
+block too, and needs it more. A reviewer asked to be adversarial, given repository
+access and told to propose fixes is the single most productive source of the
+behaviour catalogued here. Put it at the end of the reviewer's prompt, after the
+output-format instructions — that position reads as the final governing
+constraint rather than as background.
