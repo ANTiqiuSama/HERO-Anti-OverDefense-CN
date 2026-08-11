@@ -104,6 +104,11 @@ that can fall out of sync with the contract. It only ever appends — no temp
 file, no overwrite — so the worst it can do to a file you already have is add a
 block at the end.
 
+**That is the whole install.** There is no setting that points at
+[`cases/`](cases/README.md) and nothing else to configure — the catalogue is not
+loaded by your agent, [on purpose](cases/README.md#how-to-use-this). It is what
+*you* quote back, by ID, when the agent insists some hardening is necessary.
+
 ⚠️ **Put it where it is always loaded.** An invoked copy still works when you
 invoke it — but it is absent exactly on the long unattended runs, where nobody is
 there to invoke it and where this failure costs you a night.
