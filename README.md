@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/hero-banner.png" alt="ANTI-OVERDEFENSE — the four letters HERO built from what they name, each captioned in English and Chinese: H in hash-engraved stone (HASHING 哈希), E as a fortified battlemented wall (EDGE CASES 边界情况), R as a grid of ticks and crosses (RUBRICS 机械判断), O as construction scaffolding (OVERBUILD 过度建设). Behind them, a tiny unfinished house ringed by an enormous, immaculately finished fortress." width="100%">
+  <img src="assets/hero-banner.png" alt="ANTI-OVERDEFENSE — the four letters HERO built from what they name, each captioned in English and Chinese: H in hash-engraved stone (HASHING 哈希), E as a fortified battlemented wall (EDGE CASES 边界情况), R as a grid of ticks and crosses (RUBRICS 机械判断), O as construction scaffolding (OVERBUILD 过度建设). Behind them, a tiny unfinished house ringed by an enormous, immaculately finished fortress." width="85%">
 </p>
 
 <p align="center">

@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/hero-banner.png" alt="ANTI-OVERDEFENSE 反过度防御 —— HERO 四个字母各由它所指的东西砌成,下方各有中英标注:H 是刻着哈希的石块(HASHING 哈希),E 是带雉堞的设防城墙(EDGE CASES 边界情况),R 是打满勾叉的评分网格(RUBRICS 机械判断),O 是施工脚手架(OVERBUILD 过度建设)。背后是一座没盖完的小屋,外面围着一圈又一圈盖得极其完整的要塞。" width="100%">
+  <img src="assets/hero-banner.png" alt="ANTI-OVERDEFENSE 反过度防御 —— HERO 四个字母各由它所指的东西砌成,下方各有中英标注:H 是刻着哈希的石块(HASHING 哈希),E 是带雉堞的设防城墙(EDGE CASES 边界情况),R 是打满勾叉的评分网格(RUBRICS 机械判断),O 是施工脚手架(OVERBUILD 过度建设)。背后是一座没盖完的小屋,外面围着一圈又一圈盖得极其完整的要塞。" width="85%">
 </p>
 
 <p align="center">
