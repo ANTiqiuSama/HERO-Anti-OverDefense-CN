@@ -14,8 +14,6 @@
 
 </div>
 
-> 🧬 **Extracted from [ARIS](https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep)** (~13.7k★ · HuggingFace Daily Papers #1 · 82 skills). ARIS runs a cross-model reviewer on every piece of work it produces. That reviewer is genuinely good — and it also spent a measurable share of its output proposing hashes nobody reads, lints for rules deliberately left as prose, and hardening for races that close in milliseconds. **HERO is the contract that keeps the value and drops the tax**, generalised out of ARIS so it works with any coding agent.
-
 The shapes look like an agent optimising for *not being blamed* rather than for
 *the work being good* — a hypothesis that fits what we observed, not an
 established account of how these models are trained. Either way the shapes are
@@ -24,7 +22,12 @@ real, there are four of them, and their initials are the name: **H**ashing,
 *which one just happened* instead of arguing about vibes.
 
 This repository is a short block you paste into your agent's config, plus a
-catalogue of the behaviours it is meant to stop.
+catalogue of the behaviours it is meant to stop. It works with **Claude Code**,
+**Codex**, **Antigravity**, **Cursor**, **GitHub Copilot**, **Windsurf** and
+**Gemini CLI** — anything that loads a config file without being asked. There is
+nothing to install.
+
+> 🧬 *Generalised out of [ARIS](https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep) (~13.7k★), whose cross-model reviewer is genuinely good — and also spent a measurable share of its output proposing hashes nobody reads. HERO keeps the value and drops the tax.*
 
 ---
 
