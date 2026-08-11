@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/hero-banner.png" alt="HERO 横幅 —— 四个字母各由它所指的东西砌成:H 是刻着哈希的石块,E 是设防的城墙,R 是评分网格,O 是脚手架。背后是一座没盖完的小屋,外面围着一圈又一圈盖得极其完整的要塞。" width="100%">
+</p>
+
 # HERO — Anti-OverDefense 🧱
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat)](LICENSE) · [![README English](https://img.shields.io/badge/README-English-blue?style=flat)](README.md) · [![案例库](https://img.shields.io/badge/📓_案例库-open-7C3AED?style=flat)](cases/README.md) · [![可粘贴的块](https://img.shields.io/badge/⚡_可粘贴的块-RULES.md-2E7D32?style=flat)](RULES.md) · [![ARIS stars](https://img.shields.io/github/stars/wanshuiyin/Auto-claude-code-research-in-sleep?style=flat&logo=github&logoColor=white&color=gold&label=ARIS%20%E2%98%85)](https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep)

@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/hero-banner.png" alt="HERO banner — the four letters built from what they name: H in hash-engraved stone, E as a fortified wall, R as a scoring grid, O as scaffolding. Behind them, a tiny unfinished house ringed by an enormous finished fortress." width="100%">
+</p>
+
 # HERO — Anti-OverDefense 🧱
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat)](LICENSE) · [![README 中文](https://img.shields.io/badge/README-%E4%B8%AD%E6%96%87-blue?style=flat)](README_CN.md) · [![Cases](https://img.shields.io/badge/📓_Case_catalogue-open-7C3AED?style=flat)](cases/README.md) · [![Paste-in block](https://img.shields.io/badge/⚡_Paste--in_block-RULES.md-2E7D32?style=flat)](RULES.md) · [![ARIS stars](https://img.shields.io/github/stars/wanshuiyin/Auto-claude-code-research-in-sleep?style=flat&logo=github&logoColor=white&color=gold&label=ARIS%20%E2%98%85)](https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep)
