@@ -2,6 +2,12 @@
   <img src="assets/hero-banner.png" alt="ANTI-OVERDEFENSE — the four letters HERO built from what they name, each captioned in English and Chinese: H in hash-engraved stone (HASHING 哈希), E as a fortified battlemented wall (EDGE CASES 边界情况), R as a grid of ticks and crosses (RUBRICS 机械判断), O as construction scaffolding (OVERBUILD 过度建设). Behind them, a tiny unfinished house ringed by an enormous, immaculately finished fortress." width="100%">
 </p>
 
+<p align="center">
+  <a href="https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep">
+    <img src="https://raw.githubusercontent.com/wanshuiyin/Auto-claude-code-research-in-sleep/main/docs/aris_logo.svg" alt="ARIS — Adversarial Research in Sleep · Claude Code × GPT · speed × rigor" width="480">
+  </a>
+</p>
+
 # HERO — Anti-OverDefense 🧱
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat)](LICENSE) · [![README 中文](https://img.shields.io/badge/README-%E4%B8%AD%E6%96%87-blue?style=flat)](README_CN.md) · [![Cases](https://img.shields.io/badge/📓_Case_catalogue-open-7C3AED?style=flat)](cases/README.md) · [![Paste-in block](https://img.shields.io/badge/⚡_Paste--in_block-RULES.md-2E7D32?style=flat)](RULES.md) · [![ARIS stars](https://img.shields.io/github/stars/wanshuiyin/Auto-claude-code-research-in-sleep?style=flat&logo=github&logoColor=white&color=gold&label=ARIS%20%E2%98%85)](https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep)
