@@ -71,6 +71,9 @@ this project actually produces it. Then keep the fix in scope:
    in principle is not enough.
 5. Where judgement is needed, judge. Do not replace it with a scoring table, a
    checklist, or a re-verification loop over something already settled.
+6. None of this overrides security, migration, verification or review that the
+   user, this project's own conventions, or a higher-priority rule asked for.
+   Those were requested; they are the work, not scope creep.
 Shapes already seen, for calibration. Examples, not a checklist — a real finding
 is not dismissed by resembling one:
   H  hashing every row of two spreadsheets to answer what comparing cells answers
@@ -91,7 +94,7 @@ Or in one command. It **appends** to `CLAUDE.md` and leaves whatever is already
 there untouched; run it twice and the second run does nothing:
 
 ```bash
-grep -q 'SCOPE LIMITS' CLAUDE.md 2>/dev/null || { printf '\n\n'; curl -sL \
+grep -qi 'scope.limits' CLAUDE.md 2>/dev/null || { printf '\n\n'; curl -sL \
   https://raw.githubusercontent.com/wanshuiyin/HERO-Anti-OverDefense/main/RULES.md \
   | awk '/^=== SCOPE LIMITS/,/^Say plainly when something is correct/'; } >> CLAUDE.md
 ```
@@ -106,6 +109,10 @@ It reads `RULES.md` instead of shipping a second copy, so there is nothing here
 that can fall out of sync with the contract. It only ever appends — no temp
 file, no overwrite — so the worst it can do to a file you already have is add a
 block at the end.
+
+**Too long for your config?** There is a [short version](RULES.md#the-short-version)
+— same six rules, no worked examples, about half the size. The examples are what
+does the calibrating, so take the full block if you have the room.
 
 **That is the whole install.** There is no setting that points at
 [`cases/`](cases/README.md) and nothing else to configure — the catalogue is not

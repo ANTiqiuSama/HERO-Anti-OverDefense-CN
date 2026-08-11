@@ -80,6 +80,9 @@ this project actually produces it. Then keep the fix in scope:
    in principle is not enough.
 5. Where judgement is needed, judge. Do not replace it with a scoring table, a
    checklist, or a re-verification loop over something already settled.
+6. None of this overrides security, migration, verification or review that the
+   user, this project's own conventions, or a higher-priority rule asked for.
+   Those were requested; they are the work, not scope creep.
 Shapes already seen, for calibration. Examples, not a checklist — a real finding
 is not dismissed by resembling one:
   H  hashing every row of two spreadsheets to answer what comparing cells answers
@@ -110,6 +113,8 @@ Chinese, same text:
    除非该情况经由本项目**受支持的用法**可达——它的文档示例、它公开的接口、它真实的
    数据。可达即可,不需要你复现出来;但"理论上构造得出"不算。
 5. 该判断的地方就判断,不要换成评分表、检查清单,或对已经定论的东西再跑一遍校验。
+6. 以上都不覆盖用户、本项目自己的约定、或更高优先级规则明确要求的安全、迁移、校验与
+   审阅。那些是被要求的,是活儿本身,不算范围外。
 已经见过的形状,供你校准。是例子不是清单——一个真问题不会因为"长得像其中一条"就被驳回:
   H  为了比对两个表格的差异,给每一行都算哈希——直接比单元格就能回答
   H  写下一堆校验和文件,而没有任何代码会去读它们
@@ -122,6 +127,61 @@ Chinese, same text:
   ✓  本项目自己的文档示例就会产生的那种"听起来罕见"的输入
 跑任何检查之前先回答:这次运行会检测出什么具体的失败?真出现了我下一步会做什么不同的事?
 答不上来就别跑。
+对的就说对。不要为了交差硬找问题。
+```
+
+---
+
+## The short version
+
+Same six rules, no worked examples — roughly half the size. Use it when your
+config file is already crowded, or when you want the rules without the shapes.
+The examples are the part that does the calibrating, so prefer the full block if
+you have the room.
+
+To install it with the one-command form in the README, change the `awk` range to
+`/^=== SCOPE-LIMITS-SHORT/,/^Say plainly when something is correct/` — or
+`/^=== 精简范围约束/,/^对的就说对/` for the Chinese one. The `grep` guard needs no
+change: it already matches either variant, so you cannot end up with both.
+
+```
+=== SCOPE-LIMITS-SHORT (bounds what you PROPOSE, never what you look for) ===
+Report anything actually wrong here, including a rare-looking case this project
+really produces. Then keep the fix in scope:
+1. Not a security paper: assume a cooperating operator on their own machine
+   unless this project says otherwise. Verification is welcome; over-defense is
+   not.
+2. No hash, checksum or fingerprint unless it replaces a materially more
+   expensive operation AND its result changes what happens next.
+3. No feature flags, migration frameworks, compat layers or wrappers for cases
+   that do not occur here.
+4. Exotic encodings, symlink races and millisecond races are out of scope unless
+   reachable through this project's supported use. Reachable is enough;
+   constructible in principle is not.
+5. Where judgement is needed, judge — not a scoring table, a checklist, or a
+   re-run of something already settled.
+6. None of this overrides security, migration, verification or review that the
+   user, this project's conventions, or a higher-priority rule asked for.
+Before any check: what specific failure would this detect, and what would I do
+differently if it occurred? No answer means do not run it.
+Say plainly when something is correct. Do not manufacture findings.
+```
+
+Chinese, same text:
+
+```
+=== 精简范围约束(约束你提议什么修法,不约束你找什么)===
+凡是这里真的有问题都要报——包括听起来罕见但本项目确实会产生的情况。
+然后把修法收在范围内:
+1. 这不是安全攻防论文:除非本项目另有说明,默认操作者是自己机器上的合作者。可以校验,
+   禁止过度防御。
+2. 不加哈希/校验和/指纹,除非它替代了一个实质上更贵的操作,并且结果会改变下一步。
+3. 不为这里不会发生的情况加 feature flag、迁移框架、兼容层、包装层。
+4. 冷门编码、符号链接竞态、毫秒级竞态不在范围内,除非经由本项目受支持的用法可达。
+   可达即可,"理论上构造得出"不算。
+5. 该判断的地方就判断,不要换成评分表、检查清单,或对已定论的东西再跑一遍。
+6. 以上都不覆盖用户、本项目约定、或更高优先级规则明确要求的安全、迁移、校验与审阅。
+跑任何检查前先回答:会检测出什么具体的失败?真出现了我会做什么不同的事?答不上来就别跑。
 对的就说对。不要为了交差硬找问题。
 ```
 
