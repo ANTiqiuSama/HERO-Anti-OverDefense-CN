@@ -17,6 +17,33 @@ IDs are `HERO-<family>-<nnn>`. Families are defined in [`../RULES.md`](../RULES.
 
 ---
 
+## How to use this
+
+**Not by pasting it into your agent's config.** This file is roughly eight times
+the size of the block, and an agent carrying eighteen worked examples of *this is
+over-defense* will start matching real findings against them and dismissing the
+ones that rhyme — which is the failure the contract exists to prevent. The block
+already carries six one-line examples for calibration; that is as much of this
+catalogue as belongs in a file loaded on every turn.
+
+**Use it the other way round: for the argument after the fact.** When your agent
+insists some hardening is necessary and you think it is not, quote the entry —
+the ID, or a link to the line — and ask it to say how its proposal differs from
+that case. That question has an answer. "It's just being careful" does not.
+
+The IDs exist for exactly this. `HERO-R-003` is quicker to type than a paragraph
+about why re-running a passing suite proves nothing, and it points at a
+description you did not write in the middle of an argument.
+
+**Read the counterexamples before you use any of this as ammunition.**
+`HERO-H-003`, `HERO-E-004`, `HERO-R-004` and `HERO-R-005` are here because a flat
+reading of the rules would have suppressed something real: a hash that paid for
+itself, a rare-looking bug the project's own docs produced, a smoke run that was
+owed, and a broad regression run whose whole point was not knowing what would
+break. If your agent cites one of *those* back at you, it may well be right.
+
+---
+
 ## H — Hashing
 
 ### HERO-H-001 · Row-wise hashing to compare two spreadsheets

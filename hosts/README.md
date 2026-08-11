@@ -20,6 +20,9 @@ Paste the block into the file your agent already reads on every turn.
 
 Codex and Antigravity read the same filename, so one `AGENTS.md` serves both.
 
+The block is the only thing you paste. The case catalogue is not part of the
+install — see [why, and what it *is* for](../cases/README.md#how-to-use-this).
+
 ## Why there are no ready-made files here
 
 A directory of six near-identical host files would be six more copies to keep in

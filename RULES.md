@@ -80,6 +80,14 @@ this project actually produces it. Then keep the fix in scope:
    in principle is not enough.
 5. Where judgement is needed, judge. Do not replace it with a scoring table, a
    checklist, or a re-verification loop over something already settled.
+Shapes already seen, for calibration. Examples, not a checklist — a real finding
+is not dismissed by resembling one:
+  H  hashing every row of two spreadsheets to answer what comparing cells answers
+  H  writing checksum files that nothing ever reads
+  E  hardening the accounts of an app that has no users and no deployment
+  R  auditing your own patch all night while the feature stays unwritten
+  R  a reviewer that returns a failing verdict on everything
+  O  guards whose justification is the previous guard, not the requirement
 Before running any check, answer: what specific failure would this detect, and
 what would I do differently if it occurred? No answer means do not run it.
 Say plainly when something is correct. Do not manufacture findings.
@@ -99,6 +107,13 @@ Chinese, same text:
    除非该情况经由本项目**受支持的用法**可达——它的文档示例、它公开的接口、它真实的
    数据。可达即可,不需要你复现出来;但"理论上构造得出"不算。
 5. 该判断的地方就判断,不要换成评分表、检查清单,或对已经定论的东西再跑一遍校验。
+已经见过的形状,供你校准。是例子不是清单——一个真问题不会因为"长得像其中一条"就被驳回:
+  H  为了比对两个表格的差异,给每一行都算哈希——直接比单元格就能回答
+  H  写下一堆校验和文件,而没有任何代码会去读它们
+  E  给一个没有用户、没有部署的应用做账号安全加固
+  R  用一整夜对自己的补丁反复审计,而功能一行没写
+  R  一个对任何提交都给不通过的审阅者
+  O  一层守卫的理由是上一层守卫,而不是需求
 跑任何检查之前先回答:这次运行会检测出什么具体的失败?真出现了我下一步会做什么不同的事?
 答不上来就别跑。
 对的就说对。不要为了交差硬找问题。
