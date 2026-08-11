@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/hero-banner.png" alt="HERO 横幅 —— 四个字母各由它所指的东西砌成:H 是刻着哈希的石块,E 是设防的城墙,R 是评分网格,O 是脚手架。背后是一座没盖完的小屋,外面围着一圈又一圈盖得极其完整的要塞。" width="100%">
+  <img src="assets/hero-banner.png" alt="ANTI-OVERDEFENSE —— HERO 四个字母各由它所指的东西砌成,下方各有标注:H 是刻着哈希的石块(HASHING),E 是带雉堞的设防城墙(EDGE CASES),R 是打满勾叉的评分网格(RUBRICS),O 是施工脚手架(OVERBUILD)。背后是一座没盖完的小屋,外面围着一圈又一圈盖得极其完整的要塞。" width="100%">
 </p>
 
 # HERO — Anti-OverDefense 🧱

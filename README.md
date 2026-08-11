@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/hero-banner.png" alt="HERO banner — the four letters built from what they name: H in hash-engraved stone, E as a fortified wall, R as a scoring grid, O as scaffolding. Behind them, a tiny unfinished house ringed by an enormous finished fortress." width="100%">
+  <img src="assets/hero-banner.png" alt="ANTI-OVERDEFENSE — the four letters HERO built from what they name, each captioned: H in hash-engraved stone (HASHING), E as a fortified battlemented wall (EDGE CASES), R as a grid of ticks and crosses (RUBRICS), O as construction scaffolding (OVERBUILD). Behind them, a tiny unfinished house ringed by an enormous, immaculately finished fortress." width="100%">
 </p>
 
 # HERO — Anti-OverDefense 🧱
