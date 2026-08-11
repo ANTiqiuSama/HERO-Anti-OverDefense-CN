@@ -1,291 +1,105 @@
 <p align="center">
-  <img src="assets/hero-banner.png" alt="ANTI-OVERDEFENSE — the four letters HERO built from what they name, each captioned in English and Chinese: H in hash-engraved stone (HASHING 哈希), E as a fortified battlemented wall (EDGE CASES 边界情况), R as a grid of ticks and crosses (RUBRICS 机械判断), O as construction scaffolding (OVERBUILD 过度建设). Behind them, a tiny unfinished house ringed by an enormous, immaculately finished fortress." width="85%">
+  <img src="assets/hero-banner.png" alt="HERO 反过度防御：别让编程 Agent 为一个小功能建一座大堡垒" width="85%">
 </p>
 
-<p align="center">
-  <a href="https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep">
-    <img src="https://raw.githubusercontent.com/wanshuiyin/Auto-claude-code-research-in-sleep/main/docs/aris_logo.svg" alt="ARIS — Adversarial Research in Sleep · Claude Code × GPT · speed × rigor" width="85%">
-  </a>
-</p>
+# HERO：别让编程 Agent 把简单问题做复杂
 
-# HERO — Anti-OverDefense 🧱
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat)](LICENSE)
+· [完整规则](RULES.md)
+· [案例库](cases/README.md)
+· [各工具放置位置](hosts/README.md)
+· [详细中文说明](README_CN.md)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat)](LICENSE) · [![README 中文](https://img.shields.io/badge/README-%E4%B8%AD%E6%96%87-blue?style=flat)](README_CN.md) · [![Cases](https://img.shields.io/badge/📓_Case_catalogue-open-7C3AED?style=flat)](cases/README.md) · [![Paste-in block](https://img.shields.io/badge/⚡_Paste--in_block-RULES.md-2E7D32?style=flat)](RULES.md) · [![ARIS stars](https://img.shields.io/github/stars/wanshuiyin/Auto-claude-code-research-in-sleep?style=flat&logo=github&logoColor=white&color=gold&label=ARIS%20%E2%98%85)](https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep)
+你让编程 Agent 写一个功能，它却先加校验和、兼容层、迁移框架、十几项检查，最后功能还没写完。
 
-<div align="center">
+HERO 就是给 Agent 的一段范围约束。它不要求 Agent 少干活，而是要求它把时间花在当前任务上：真的问题要找，必要的测试要做，但不要为项目里根本不会发生的情况修建一整套防御工程。
 
-### 🧱 You asked for a feature. It built a fortress around the feature, and never got to the feature.
+## HERO 到底在防什么
 
-***你让它写个功能,它给你造了座堡垒,然后功能一直没写完。***
+HERO 是四类常见“过度防御”的首字母：
 
-</div>
+| 类型 | 通俗解释 | 常见表现 | 更合适的做法 |
+|---|---|---|---|
+| **H — Hashing** | 没必要也要算哈希 | 比较两个表格时，先给每一行算哈希；生成一堆没人读取的校验和文件 | 能直接比较就直接比较。只有哈希确实能省掉更昂贵的工作时才使用 |
+| **E — Edge cases** | 为这里不会出现的情况操心 | 给没有用户、没有部署的演示项目设计复杂的账号防护；为理论上能构造、实际不可达的输入写大量分支 | 先问这种情况能不能通过项目支持的用法真正到达 |
+| **R — Rubrics** | 不敢判断，于是制造流程 | 用评分表代替判断；补丁已经确认没问题，还反复检查；审阅器永远给“不通过” | 有真实疑点就验证，已经确定的事情不要循环复查；没问题就明确说没问题 |
+| **O — Overbuild** | 为没提出的未来需求搭架子 | 提前加 feature flag、迁移框架、兼容层和层层包装 | 每一层结构都应该能对应到当前需求或真实变化 |
 
-The shapes look like an agent optimising for *not being blamed* rather than for
-*the work being good* — a hypothesis that fits what we observed, not an
-established account of how these models are trained. Either way the shapes are
-real, there are four of them, and their initials are the name: **H**ashing,
-**E**dge cases, **R**ubrics, **O**verbuild. Naming them makes it possible to say
-*which one just happened* instead of arguing about vibes.
+一句话判断：**这一步会解决当前项目里的哪个真实问题？如果答不上来，先别做。**
 
-This repository is a short block you paste into your agent's config, plus a
-catalogue of the behaviours it is meant to stop. It works with **Claude Code**,
-**Codex**, **Antigravity**, **Cursor**, **GitHub Copilot**, **Windsurf** and
-**Gemini CLI** — anything that loads a config file without being asked. There is
-nothing to install.
+## 它不是“少测试、少做安全”
 
-> 🧬 *Generalised out of [ARIS](https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep) (~13.7k★), whose cross-model reviewer is genuinely good — and also spent a measurable share of its output proposing hashes nobody reads. HERO keeps the value and drops the tax.*
+HERO 限制的是不成比例的解决方案，不是限制发现问题。
 
----
+下面这些仍然应该做：
 
-## 🧭 What's inside
+- 项目真实可达的边界情况，即使它听起来很少见；
+- 用户、项目规范或更高优先级规则明确要求的安全、迁移、验证和审阅；
+- 能回答具体疑问的测试，例如改了轮询逻辑后跑一次真实轮询；
+- 共享接口或数据格式变更后的相关回归测试。
 
-| | |
+下面这些通常不值得做：
+
+- 只因为“理论上可能”就防御项目不支持的输入；
+- 对刚刚通过、之后也没改过的内容重复跑同一套检查；
+- 一层保护措施的唯一理由，是保护上一层保护措施；
+- 为没有发布、没有用户、没有历史版本的项目提前建设迁移体系。
+
+拿不准时问三个问题：
+
+1. 这种失败能通过本项目支持的用法发生吗？
+2. 这次检查会发现什么具体问题？发现后，我会改变哪一步？
+3. 新增的结构能直接对应到需求、真实数据或已经发生的变化吗？
+
+## 怎么使用
+
+把下面这段放进编程 Agent 每轮都会自动读取的配置文件。配置已经很长时用这个精简版；需要更多校准例子时使用 [`RULES.md`](RULES.md) 里的完整版。
+
+```text
+=== 精简范围约束（约束你提议什么修法，不约束你找什么）===
+凡是这里真的有问题都要报，包括听起来罕见但本项目确实会产生的情况。
+然后把修法收在范围内：
+1. 这不是安全攻防论文。除非本项目另有说明，默认操作者是自己机器上的合作者。
+   可以校验，但不要过度防御。
+2. 不加哈希、校验和或指纹，除非它替代了一个明显更贵的操作，并且结果会改变下一步。
+3. 不为这里不会发生的情况加 feature flag、迁移框架、兼容层或包装层。
+4. 冷门编码、符号链接竞态、毫秒级竞态不在范围内，除非它能通过本项目支持的用法到达。
+   能到达就要报；只是理论上能构造出来不算。
+5. 该判断的地方就判断，不要换成评分表、检查清单，或对已经确定的事情再跑一遍。
+6. 以上规则不覆盖用户、项目规范或更高优先级规则明确要求的安全、迁移、验证和审阅。
+跑任何检查前先回答：它会发现什么具体失败？真失败了，我会改变哪一步？答不上来就别跑。
+对的就说对，不要为了交差硬找问题。
+```
+
+常见工具对应的文件：
+
+| 工具 | 放置位置 |
 |---|---|
-| **[`RULES.md`](RULES.md)** | The contract, in English and Chinese, plus the three places the line is genuinely hard to draw. |
-| **[`cases/`](cases/README.md)** | Observed behaviours: what was asked, what the agent did, why it is disproportionate, what proportionate looks like. **You do not paste this in** — it is what you quote back when the agent argues. |
-| **[`hosts/`](hosts/README.md)** | Where to paste it — Claude Code, Codex, Antigravity, Copilot, Cursor, Windsurf, Gemini CLI. |
+| Claude Code | 项目根目录的 `CLAUDE.md` |
+| Codex / Antigravity | 项目根目录的 `AGENTS.md` |
+| GitHub Copilot | `.github/copilot-instructions.md` |
+| Cursor | `.cursor/rules/*.mdc`，旧项目也可能使用 `.cursorrules` |
+| Windsurf | `.windsurfrules` |
+| Gemini CLI | `GEMINI.md` |
 
----
+只需要放入规则块，不要把整个案例库塞进 Agent 配置。案例库是给人查阅的：当 Agent 坚持某项复杂建设必不可少时，可以引用对应案例，让它解释当前情况有什么不同。
 
-## 🚀 Quickstart
+## 仓库内容
 
-Paste this into the file your agent already reads on every turn — `CLAUDE.md`,
-`AGENTS.md`, `.github/copilot-instructions.md`, `.cursorrules`. See
-[`hosts/`](hosts/README.md) for the full table.
+- [`RULES.md`](RULES.md)：中英文完整规则、精简规则，以及容易误判的边界；
+- [`cases/README.md`](cases/README.md)：按 H、E、R、O 分类的真实行为案例和反例；
+- [`hosts/README.md`](hosts/README.md)：不同编程 Agent 的配置文件位置。
 
-```
-=== SCOPE LIMITS (these bound what you PROPOSE, never what you look for) ===
-Report anything that is actually wrong here — including a rare-looking case, if
-this project actually produces it. Then keep the fix in scope:
-1. This is not a security paper. Verification is welcome; over-defense is not.
-   Unless this project states otherwise, assume a cooperating operator on their
-   own machine; if it has a real adversary, it will say so and that scope wins.
-2. Do not add hashes, checksums or fingerprints unless the hash replaces a
-   materially more expensive operation AND its result changes what happens next.
-3. No defensive scaffolding: no feature flags, migration frameworks, compat
-   layers or wrappers for cases that do not occur here.
-4. No corner-case obsession: exotic encodings, symlink races, RTL text and
-   millisecond races are out of scope unless the case is reachable through this
-   project's supported use — its documented inputs, its published interface, its
-   real data. Reachable is enough; you do not need a reproduction. Constructible
-   in principle is not enough.
-5. Where judgement is needed, judge. Do not replace it with a scoring table, a
-   checklist, or a re-verification loop over something already settled.
-6. None of this overrides security, migration, verification or review that the
-   user, this project's own conventions, or a higher-priority rule asked for.
-   Those were requested; they are the work, not scope creep.
-Shapes already seen, for calibration. Examples, not a checklist — a real finding
-is not dismissed by resembling one:
-  H  hashing every row of two spreadsheets to answer what comparing cells answers
-  H  writing checksum files that nothing ever reads
-  E  hardening the accounts of an app that has no users and no deployment
-  R  auditing your own patch all night while the feature stays unwritten
-  R  a reviewer that returns a failing verdict on everything
-  O  guards whose justification is the previous guard, not the requirement
-And two that look like the above and are not. Report these:
-  ✓  a digest that lets you skip re-reading a large file you already have
-  ✓  a rare-looking input this project's own documentation example produces
-Before running any check, answer: what specific failure would this detect, and
-what would I do differently if it occurred? No answer means do not run it.
-Say plainly when something is correct. Do not manufacture findings.
-```
+这个项目没有安装包，也没有运行时依赖。把规则放进 Agent 会自动读取的文件，就完成了。
 
-Or in one command. It **appends** to `CLAUDE.md` and leaves whatever is already
-there untouched; run it twice and the second run does nothing:
+## 使用边界
 
-```bash
-grep -qi 'scope.limits' CLAUDE.md 2>/dev/null || { printf '\n\n'; curl -sL \
-  https://raw.githubusercontent.com/wanshuiyin/HERO-Anti-OverDefense/main/RULES.md \
-  | awk '/^=== SCOPE LIMITS/,/^Say plainly when something is correct/'; } >> CLAUDE.md
-```
+HERO 是自然语言指令，不是强制执行器。它能提醒 Agent 控制范围，但更高优先级的系统规则仍然可能覆盖它，模型也不一定每次都完全遵守。
 
-Swap the filename for your host — `AGENTS.md` for Codex and Antigravity,
-`.github/copilot-instructions.md` for Copilot; see [`hosts/`](hosts/README.md).
-For the Chinese block see the [Chinese README](README_CN.md#-快速开始) — both the
-`grep` guard and the `awk` range have to change together, and changing only one
-of them costs you the protection against running it twice.
+如果项目确实面向不可信用户、处理敏感数据、维护公开接口或正在迁移线上版本，请以真实威胁和项目要求为准。不要拿 HERO 当作跳过安全、兼容性或必要测试的理由。
 
-It reads `RULES.md` instead of shipping a second copy, so there is nothing here
-that can fall out of sync with the contract. It only ever appends — no temp
-file, no overwrite — so the worst it can do to a file you already have is add a
-block at the end.
+## 来源与许可
 
-**Too long for your config?** There is a [short version](RULES.md#the-short-version)
-— same six rules, no worked examples, about half the size. The examples are what
-does the calibrating, so take the full block if you have the room.
+本仓库基于 [wanshuiyin/HERO-Anti-OverDefense](https://github.com/wanshuiyin/HERO-Anti-OverDefense) 整理和改写，保留原项目的规则、案例与 MIT 许可证。原项目版权归 Ruofeng Yang 所有；本仓库的文字改写不改变原项目的许可与归属。
 
-**That is the whole install.** There is no setting that points at
-[`cases/`](cases/README.md) and nothing else to configure — the catalogue is not
-loaded by your agent, [on purpose](cases/README.md#how-to-use-this). It is what
-*you* quote back, by ID, when the agent insists some hardening is necessary.
-
-⚠️ **Put it where it is always loaded.** An invoked copy still works when you
-invoke it — but it is absent exactly on the long unattended runs, where nobody is
-there to invoke it and where this failure costs you a night.
-
----
-
-## 🔤 The four families
-
-### 🔐 H — Hashing
-
-Checksums, fingerprints and digests added where nothing reads them.
-
-A hash earns its place when it **replaces a materially more expensive operation**
-*and* its result changes what happens next. Comparing a digest to avoid pulling
-an unchanged large file back into context is a real saving. Hashing every row of
-a spreadsheet to answer what ordinary cell comparison already answers is not —
-and note that the second one *does* read its hashes, which is why "something
-reads it" is too weak a test.
-
-### 🧊 E — Edge cases
-
-Defending inputs that do not occur **here**.
-
-That word is the entire rule. A rare-sounding case this project actually produces
-is a real bug and must be reported. A hostile actor who never visits is not.
-
-### 📋 R — Rubrics
-
-Judgement replaced by machinery — scoring tables, checklists, re-verification
-loops over something already settled.
-
-The characteristic symptom: a night of work, a complete audit trail, and no
-feature.
-
-### 🏗️ O — Overbuild
-
-Scaffolding, feature flags, migration frameworks and compatibility layers built
-for a future nobody asked for. Guards guarding guards.
-
-### 🪞 Sibling: over-correction
-
-Point out one flaw and the agent reverses the whole direction; say it went
-slightly east and it relocates to the Atlantic. Same root, different symptom,
-and none of the four letters fits it — so it is catalogued **outside** HERO.
-Blurring the taxonomy is how a case catalogue stops being useful.
-
----
-
-## 🎯 Why this exists
-
-Asked to diagnose itself, the model put it better than we did:
-
-> My own failure mode here is turning "could improve confidence" into "therefore
-> must be built and checked." That silently promotes optional uncertainty
-> reduction into the main task.
-
-That is the whole disease in two sentences. Optional uncertainty reduction is
-infinite; the task is not.
-
----
-
-## ⚖️ What it bounds — and what it must never suppress
-
-**These limits bound the fix, never the search.** Getting this backwards makes
-the contract actively harmful.
-
-One of the defects that motivated this repository was a scheduler that hung
-because a dependency written as a bare string, where a list was expected, got
-iterated character by character. That sounds like a rare input-shape edge case —
-except the project's **own documentation example** used the bare-string form, so
-every user following the docs produced it.
-
-> The test is not *how rare does this sound*. It is **does this happen here**.
-
-The same cut separates a smoke test from test theatre. A smoke test is not
-over-defense; it is the cheapest contact with reality, and skipping it is how the
-worst bugs survive. Another defect in the same repository killed every training
-job at its first sixty-second poll and then looped forever — it shipped because
-the code had never been run once end to end, while carrying detailed prose about
-its own state machine.
-
-So the rule is not "test less". It is the question in the block: *what specific
-failure would this detect, and what would I do differently?* A one-line change
-followed by the full suite cannot answer it. A first job surviving its first
-poll, when the polling code is exactly what is under suspicion, answers it
-immediately.
-
----
-
-## ⚠️ Honest limitations
-
-**It helps; it is not a switch.** Asked in the original community discussion
-whether writing these rules into a markdown file actually works, the most-agreed
-answer was *"it helps a little"*. That is the right expectation. Some runs will
-still fortify.
-
-**The model can decline.** There are reports of the agent replying that where
-these instructions conflict with a higher-priority system constraint, the system
-constraint still wins. This *is* configuration — but configuration by defeasible
-natural-language instruction, which a stronger instruction can override, not
-enforcement.
-
-**Model choice is also a lever.** Several reports describe switching to a
-different or earlier model and the problem simply going away. If a task is
-especially sensitive to this failure, that may be more direct than any prompt.
-
-**This is not about making the agent do less work.** Every rule here is about
-spending the work on the thing that was asked for. The catalogue exists so that
-"that's over-defense" is a claim you can check against a specific recognisable
-shape — not a way to wave away a finding you would rather not deal with.
-
----
-
-## 🤝 Contributing
-
-A useful entry has four fields: **what was asked**, **what the agent did**, **why
-that is disproportionate**, **what proportionate looks like**. The last one is
-the one that matters — a catalogue of complaints without remedies is a wall, not
-a resource.
-
-Counterexamples are wanted too. Four entries exist precisely because a flat
-reading of the rules would have been wrong — a hash that pays for itself, a
-rare-looking bug the project's own docs produced, a smoke run that was owed, and
-a broad regression run whose whole point was not knowing what would break.
-
-No usernames, no quoted complaints, no attribution — what matters is the shape,
-not who hit it.
-
----
-
-## 🧩 Works with
-
-**Claude Code · Codex · Antigravity · Cursor · GitHub Copilot · Windsurf · Gemini CLI**
-— and anything else that loads a config file without being asked.
-
-There is nothing to install and no version to track. The block is plain text in
-whichever file your agent already reads on every turn, so a host this list has
-never heard of works the same way. Codex and Antigravity both read `AGENTS.md`,
-so one file serves both. See [`hosts/`](hosts/README.md) for the exact filename
-each one loads and where to put the block inside it.
-
-If you run a second model as a reviewer, give it the block too — a reviewer told
-to be adversarial, handed repository access and asked to propose fixes, is the
-single most productive source of the behaviour catalogued here.
-
----
-
-## 💬 Community
-
-Join the WeChat group (shared with the [ARIS](https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep)
-community) to compare notes on where your agent over-defends:
-
-<p align="center">
-  <img src="assets/wechat_group.jpg" alt="WeChat group QR code (shared with the ARIS community)" width="300">
-</p>
-
-*(The group QR rotates weekly — if it's expired, open an issue and we'll post a fresh one.)*
-
----
-
-## 🔭 Related projects
-
-- **[ARIS](https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep)** — overnight autonomous ML research via cross-model adversarial review. A version of this contract ships inside its reviewer prompts.
-- **[Anti-Autoresearch](https://github.com/wanshuiyin/Anti-Autoresearch)** — the same method pointed at research integrity: observe real failures, name them as families, ship a contract.
-
----
-
-## 📖 License
-
-MIT.
+详见 [`LICENSE`](LICENSE)。
