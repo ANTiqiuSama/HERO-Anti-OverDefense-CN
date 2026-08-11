@@ -251,6 +251,19 @@ single most productive source of the behaviour catalogued here.
 
 ---
 
+## 💬 Community
+
+Join the WeChat group (shared with the [ARIS](https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep)
+community) to compare notes on where your agent over-defends:
+
+<p align="center">
+  <img src="assets/wechat_group.jpg" alt="WeChat group QR code (shared with the ARIS community)" width="300">
+</p>
+
+*(The group QR rotates weekly — if it's expired, open an issue and we'll post a fresh one.)*
+
+---
+
 ## 🔭 Related projects
 
 - **[ARIS](https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep)** — overnight autonomous ML research via cross-model adversarial review. A version of this contract ships inside its reviewer prompts.

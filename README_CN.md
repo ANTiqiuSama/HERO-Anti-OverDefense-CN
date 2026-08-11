@@ -173,6 +173,19 @@ grep -q '范围约束' CLAUDE.md 2>/dev/null || { printf '\n\n'; curl -sL \
 
 ---
 
+## 💬 交流群
+
+加入微信群(与 [ARIS](https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep)
+社区共享),一起交流你的 agent 都在哪儿过度防御:
+
+<p align="center">
+  <img src="assets/wechat_group.jpg" alt="微信群二维码(与 ARIS 社区共享)" width="300">
+</p>
+
+*(群二维码每周轮换 —— 过期了就开个 issue,我们会贴新的。)*
+
+---
+
 ## 🔭 相关项目
 
 - **[ARIS](https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep)** —— 跨模型对抗审阅驱动的过夜自主 ML 研究。这份契约的一个版本已经内置在它的审阅 prompt 里。
