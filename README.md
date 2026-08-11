@@ -15,9 +15,9 @@
 The shapes look like an agent optimising for *not being blamed* rather than for
 *the work being good* — a hypothesis that fits what we observed, not an
 established account of how these models are trained. Either way the shapes are
-real, there are four of them — **H**ashing, **E**dge cases, **R**ubrics,
-**O**verbuild — and naming them makes it possible to say *which one just
-happened* instead of arguing about vibes.
+real, there are four of them, and their initials are the name: **H**ashing,
+**E**dge cases, **R**ubrics, **O**verbuild. Naming them makes it possible to say
+*which one just happened* instead of arguing about vibes.
 
 This repository is a short block you paste into your agent's config, plus a
 catalogue of the behaviours it is meant to stop.

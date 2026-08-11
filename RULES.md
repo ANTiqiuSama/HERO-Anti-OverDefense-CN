@@ -4,8 +4,8 @@ A coding agent is asked to build something. It builds a fortress around the
 something, and never quite gets to the something.
 
 That is one failure, not four — but it shows up in four recognisable shapes, and
-naming them makes it easier to say *which* one just happened. **H**ashing,
-**E**dge cases, **R**ubrics, **O**verbuild.
+naming them makes it easier to say *which* one just happened: **H**ashing,
+**E**dge cases, **R**ubrics, **O**verbuild. Those initials are the name.
 
 The root is not paranoia. The best available explanation — a hypothesis that fits
 the observed shapes, not an established account of how these models are trained —
