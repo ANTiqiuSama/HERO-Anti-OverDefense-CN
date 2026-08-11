@@ -88,6 +88,9 @@ is not dismissed by resembling one:
   R  auditing your own patch all night while the feature stays unwritten
   R  a reviewer that returns a failing verdict on everything
   O  guards whose justification is the previous guard, not the requirement
+And two that look like the above and are not. Report these:
+  ✓  a digest that lets you skip re-reading a large file you already have
+  ✓  a rare-looking input this project's own documentation example produces
 Before running any check, answer: what specific failure would this detect, and
 what would I do differently if it occurred? No answer means do not run it.
 Say plainly when something is correct. Do not manufacture findings.
@@ -114,6 +117,9 @@ Chinese, same text:
   R  用一整夜对自己的补丁反复审计,而功能一行没写
   R  一个对任何提交都给不通过的审阅者
   O  一层守卫的理由是上一层守卫,而不是需求
+另有两种长得像上面、但不是的。这些要报:
+  ✓  用摘要比对来跳过重读一个你已经有的大文件
+  ✓  本项目自己的文档示例就会产生的那种"听起来罕见"的输入
 跑任何检查之前先回答:这次运行会检测出什么具体的失败?真出现了我下一步会做什么不同的事?
 答不上来就别跑。
 对的就说对。不要为了交差硬找问题。
@@ -171,6 +177,15 @@ an uncertainty that is still *live*: something you do not already know, that thi
 run could actually settle. A first job surviving its first poll, when the polling
 code is exactly what is under suspicion, is live. Re-running a suite that passed
 an hour ago against code you did not touch is not.
+
+Read too literally, that gate also forbids the runs whose entire purpose is to
+find out *which* thing broke — change a shared serialization format and you
+genuinely cannot say in advance which consumer will fail. That run is
+proportionate: the uncertainty is real and bounded ("some consumer of this format
+may not survive it") and the outcome changes the next action, fix or roll back.
+Naming a bounded class of breakage is a good enough answer; only "it might catch
+something" is not. Scope the run to the consumers of what you changed, not to
+everything.
 
 **Hash as cache versus hash as evidence.** A flat ban on hashing is wrong, and
 the community said so: comparing digests to skip re-reading an unchanged file is

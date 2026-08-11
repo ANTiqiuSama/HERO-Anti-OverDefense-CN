@@ -79,6 +79,9 @@ is not dismissed by resembling one:
   R  auditing your own patch all night while the feature stays unwritten
   R  a reviewer that returns a failing verdict on everything
   O  guards whose justification is the previous guard, not the requirement
+And two that look like the above and are not. Report these:
+  ✓  a digest that lets you skip re-reading a large file you already have
+  ✓  a rare-looking input this project's own documentation example produces
 Before running any check, answer: what specific failure would this detect, and
 what would I do differently if it occurred? No answer means do not run it.
 Say plainly when something is correct. Do not manufacture findings.
