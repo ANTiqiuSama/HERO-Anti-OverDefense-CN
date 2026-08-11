@@ -66,6 +66,18 @@
 对的就说对。不要为了交差硬找问题。
 ```
 
+或者一条命令搞定。它是**追加**到 `CLAUDE.md`,原有内容一个字都不动;跑第二次什么也不会发生:
+
+```bash
+grep -q '范围约束' CLAUDE.md 2>/dev/null || { printf '\n\n'; curl -sL \
+  https://raw.githubusercontent.com/wanshuiyin/HERO-Anti-OverDefense/main/RULES.md \
+  | awk '/^=== 范围约束/,/^对的就说对/'; } >> CLAUDE.md
+```
+
+换成你的 host 对应的文件名即可 —— Codex 和 Antigravity 是 `AGENTS.md`,Copilot 是 `.github/copilot-instructions.md`,见 [`hosts/`](hosts/README.md)。要英文块见 [English README](README.md#-quickstart) —— `grep` 和 `awk` 两处都要跟着换成英文的标记,只换一处会让重复跑失去保护。
+
+它是**直接读 `RULES.md`** 而不是另存一份,所以不存在"和契约不同步"的第二份拷贝。它也**只做追加** —— 不写临时文件、不覆盖 —— 对一个你已有的文件,它能造成的最坏后果就是在末尾多一段。
+
 ⚠️ **放在它每轮都会加载的地方。** "唤起才读"的那一份,你唤起的时候当然也管用——但恰恰在整夜无人值守的长跑里,没人替你唤起,而那正是这个毛病最贵的时候。
 
 ---

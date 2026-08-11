@@ -38,11 +38,18 @@ compliance.
 
 ## Placement inside the file
 
-Near the top, in its own section, above any project-specific instructions. Two
-reasons: instructions competing for the same decision tend to resolve toward
-whichever is more specific, and the block is deliberately general — it should be
-the frame, not a footnote. And it survives edits to the project-specific part
+Near the top, in its own section, above any project-specific instructions. The
+reasoning: instructions competing for the same decision plausibly resolve toward
+whichever is more specific, and the block is deliberately general — better as the
+frame than as a footnote. It also survives edits to the project-specific part
 below it.
+
+Treat that as a preference, not a measured effect. We have not tested it, and the
+one-command install in the README appends to the end of the file, which we
+consider fine — appending cannot damage what is already there, and buying a
+top-of-file position would mean rewriting someone's config through a temp file
+for an ordering effect nobody has demonstrated. If you ever catch a specific
+instruction winning against the block, move it up; that is one cut and paste.
 
 ## If you also review with a second model
 

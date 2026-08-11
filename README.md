@@ -84,6 +84,26 @@ what would I do differently if it occurred? No answer means do not run it.
 Say plainly when something is correct. Do not manufacture findings.
 ```
 
+Or in one command. It **appends** to `CLAUDE.md` and leaves whatever is already
+there untouched; run it twice and the second run does nothing:
+
+```bash
+grep -q 'SCOPE LIMITS' CLAUDE.md 2>/dev/null || { printf '\n\n'; curl -sL \
+  https://raw.githubusercontent.com/wanshuiyin/HERO-Anti-OverDefense/main/RULES.md \
+  | awk '/^=== SCOPE LIMITS/,/^Say plainly when something is correct/'; } >> CLAUDE.md
+```
+
+Swap the filename for your host — `AGENTS.md` for Codex and Antigravity,
+`.github/copilot-instructions.md` for Copilot; see [`hosts/`](hosts/README.md).
+For the Chinese block see the [Chinese README](README_CN.md#-快速开始) — both the
+`grep` guard and the `awk` range have to change together, and changing only one
+of them costs you the protection against running it twice.
+
+It reads `RULES.md` instead of shipping a second copy, so there is nothing here
+that can fall out of sync with the contract. It only ever appends — no temp
+file, no overwrite — so the worst it can do to a file you already have is add a
+block at the end.
+
 ⚠️ **Put it where it is always loaded.** An invoked copy still works when you
 invoke it — but it is absent exactly on the long unattended runs, where nobody is
 there to invoke it and where this failure costs you a night.
