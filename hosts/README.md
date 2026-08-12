@@ -1,61 +1,38 @@
-# Installing the block
+# 放到哪里才会生效
 
-[`../RULES.md`](../RULES.md) is the canonical copy of the block. The READMEs
-repeat it so the front page is usable without a second click — two copies per
-language, which is a real synchronization cost, accepted here in exchange for
-that. It has already been paid once: the README copies had silently drifted from
-RULES.md before anyone noticed. So edit RULES.md first, then sync the READMEs.
-Paste the block into the file your agent already reads on every turn.
+HERO v2 分成短常驻规则和按需 Skill。不要把整个 `RULES.md`、`PRODUCT.md` 或案例库塞进 Agent 的常驻配置。
 
-| Host | File it reads | Scope |
-|---|---|---|
-| Claude Code | `CLAUDE.md` in the project root, or `~/.claude/CLAUDE.md` | project / global |
-| Codex | `AGENTS.md` in the project root | project |
-| Antigravity | `AGENTS.md` in the project root, or `~/.gemini/AGENTS.md` | project / global |
-| GitHub Copilot | `.github/copilot-instructions.md` | repository |
-| Cursor | `.cursor/rules/*.mdc`, or a legacy `.cursorrules` | project |
-| Windsurf | `.windsurfrules` | project |
-| Gemini CLI | `GEMINI.md` | project |
-| Anything else | whatever that host loads unprompted | — |
+## 常驻规则
 
-Codex and Antigravity read the same filename, so one `AGENTS.md` serves both.
+复制 [`../AGENTS.md`](../AGENTS.md) 中 `HERO-CONTRACT-START` 到 `HERO-CONTRACT-END` 的内容，放进对应工具会自动读取的项目文件：
 
-The block is the only thing you paste. The case catalogue is not part of the
-install — see [why, and what it *is* for](../cases/README.md#how-to-use-this).
+| 工具 | 项目文件 |
+|---|---|
+| Codex / Antigravity | `AGENTS.md` |
+| Claude Code | `CLAUDE.md` |
+| GitHub Copilot | `.github/copilot-instructions.md` |
+| Cursor | `.cursor/rules/*.mdc`，旧项目可能使用 `.cursorrules` |
+| Windsurf | `.windsurfrules` |
+| Gemini CLI | `GEMINI.md` |
 
-## Why there are no ready-made files here
+如果文件已经存在，把这段放在项目约定附近即可，不要覆盖原内容。项目确有发布、安全、兼容或迁移要求时，以更具体的项目规则为准。
 
-A directory of six near-identical host files would be six more copies to keep in
-sync, added for a convenience nobody asked for. That is `HERO-O`. A table of
-destinations costs a reader ten seconds instead.
+## Codex Skill
 
-## Put it where it is always loaded
+复杂任务再复制 Skill：
 
-An invoked copy is not useless, but it is absent exactly when you need it most:
-on the long unattended runs, where nobody is there to invoke it and where this
-failure costs a night. Always-loaded placement buys coverage — it does not buy
-compliance.
+```bash
+mkdir -p .agents/skills
+cp -R /path/to/HERO-Anti-OverDefense-CN/.agents/skills/keep-task-in-scope .agents/skills/
+```
 
-## Placement inside the file
+Codex 开始工作前会读取 `AGENTS.md`。Skill 只先暴露名称和描述，任务命中后才加载完整内容，因此适合承载长期实验、冻结审计和迁移判断，而不用让所有简单任务支付同样的上下文成本。
 
-Near the top, in its own section, above any project-specific instructions. The
-reasoning: instructions competing for the same decision plausibly resolve toward
-whichever is more specific, and the block is deliberately general — better as the
-frame than as a footnote. It also survives edits to the project-specific part
-below it.
+## 生效时机
 
-Treat that as a preference, not a measured effect. We have not tested it, and the
-one-command install in the README appends to the end of the file, which we
-consider fine — appending cannot damage what is already there, and buying a
-top-of-file position would mean rewriting someone's config through a temp file
-for an ordering effect nobody has demonstrated. If you ever catch a specific
-instruction winning against the block, move it up; that is one cut and paste.
+- 修改项目 `AGENTS.md` 后，对新启动的任务最可靠；
+- 已经运行很久的任务，应在目标改变、恢复或上下文压缩后重新锚定；
+- Skill 可由 Agent 根据描述自动选择，也可以显式使用 `$keep-task-in-scope`；
+- 不要按固定分钟数重复发送 HERO 提醒。
 
-## If you also review with a second model
-
-If your workflow has one model reviewing another's work, the reviewer needs the
-block too, and needs it more. A reviewer asked to be adversarial, given repository
-access and told to propose fixes is the single most productive source of the
-behaviour catalogued here. Put it at the end of the reviewer's prompt, after the
-output-format instructions — that position reads as the final governing
-constraint rather than as background.
+关于 Codex 的实际加载规则，以 OpenAI 官方 [AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md) 和 [Skills](https://learn.chatgpt.com/docs/build-skills) 文档为准。

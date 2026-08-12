@@ -15,6 +15,9 @@ spreadsheets, it hashed every row" is.
 
 IDs are `HERO-<family>-<nnn>`. Families are defined in [`../RULES.md`](../RULES.md).
 
+Long-running research can combine several families at once. See the anonymized
+cross-family case: [实验治理吞掉了实验本身](research-governance-loop.md).
+
 ---
 
 ## How to use this

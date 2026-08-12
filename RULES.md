@@ -1,282 +1,155 @@
-# HERO — the four families of coding-agent over-defense
+# HERO v2：从提醒语变成执行机制
 
-A coding agent is asked to build something. It builds a fortress around the
-something, and never quite gets to the something.
+HERO 原版准确描述了四类过度防御：**H**ashing、**E**dge cases、**R**ubrics、**O**verbuild。问题在于，描述一种坏行为并不等于稳定改变执行顺序。Agent 可能同意“不要过度建设”，下一步仍先做兼容层、审计流程和宽范围测试。
 
-That is one failure, not four — but it shows up in four recognisable shapes, and
-naming them makes it easier to say *which* one just happened: **H**ashing,
-**E**dge cases, **R**ubrics, **O**verbuild. Those initials are the name.
+这个版本把重点从“记住四个名词”改为三件更可执行的事：
 
-The root is not paranoia. The best available explanation — a hypothesis that fits
-the observed shapes, not an established account of how these models are trained —
-is that the agent behaves as though it were optimising for *not being blamed*
-rather than for *the work being good*. Asked to diagnose itself, gpt-5.6-sol put
-it better than we did:
+1. 始终保留用户要求的主交付物；
+2. 额外工作进入关键路径前必须有现实依据和决策价值；
+3. 只在真正发生范围决策时重新提醒，而不是按时间反复复述。
 
-> My own failure mode here is turning "could improve confidence" into "therefore
-> must be built and checked." That silently promotes optional uncertainty
-> reduction into the main task.
+## 推荐实现：三层，而不是二选一
 
----
+| 层 | 载体 | 什么时候加载 | 放什么 | 上下文成本 |
+|---|---|---|---|---|
+| 常驻约束 | [`AGENTS.md`](AGENTS.md) | 每次新任务/会话开始 | 主任务、证据门、验证范围、重锚条件 | 小且固定 |
+| 按需流程 | [`keep-task-in-scope` Skill](.agents/skills/keep-task-in-scope/SKILL.md) | 任务命中或显式调用时 | 如何判断加固、迁移、兼容、宽测和新抽象 | 只在需要时增加 |
+| 行为回归 | [`cases/`](cases/README.md) | 不自动加载 | 正例、反例、失败形状 | 日常为零 |
 
-## The four families
+只用 Skill 不够：Skill 依赖显式调用或任务描述命中，不能保证每次都触发。只放一大段 `AGENTS.md` 也不理想：它会在每次任务中占上下文，例子越堆越容易让 Agent 把例子当检查清单。
 
-**H — Hashing.** Checksums, fingerprints and digests that do not pay for
-themselves. A hash earns its place when it *replaces a materially more expensive
-operation* and its result changes what happens next — comparing a digest to avoid
-re-reading an unchanged large file into context is a real saving. Hashing every
-row of a spreadsheet to answer what ordinary comparison already answers is not,
-and note that the second one *does* read its hashes. "Something reads it" is too
-weak a test; the question is what the hash saved, and what changes because of
-it.
+所以常驻层只保留会改变决策的最短规则，详细判断放进 Skill，案例只用于离线校准。Codex 的加载机制可参考 OpenAI 官方的 [AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md) 和 [Skills](https://learn.chatgpt.com/docs/build-skills) 文档。
 
-**E — Edge cases.** Defending inputs that do not occur here. The word *here* is
-the whole rule: a rare-sounding case reachable through this project's supported
-use — its documented inputs, its published interface, its real data — is a real
-bug and must be reported. A hostile actor who never visits is not. Reachable is
-enough; "constructible in principle" is not.
+## 新文本改了什么
 
-**R — Rubrics.** Judgement replaced by machinery — scoring tables, checklists,
-lints, re-verification loops that re-check what is already settled. The
-characteristic symptom is a night of work with a full audit trail and no feature.
+### 1. 从“禁止某类东西”改为“额外工作必须过门”
 
-**O — Overbuild.** Scaffolding, flags, migration frameworks, compatibility layers
-and wrappers built for a future that has not been asked for. Guards guarding
-guards.
+哈希、缓存、迁移、兼容、安全和广泛测试都可能是正确方案。按名词禁止会压掉真问题。
 
-## Not in HERO, but real
+现在判断一项额外工作是否进入当前实现，要看四件事：
 
-**Over-correction.** Point out one flaw and the agent abandons the whole
-direction; say it went slightly east and it relocates to the Atlantic. Also:
-answering the question the prompt's phrasing implied rather than the question
-asked.
+- **依据**：受支持用法可达、真实数据/接口/消费者、明确需求、真实威胁或已经发生的变化；
+- **后果**：不做会发生什么具体失败或成本；
+- **决策价值**：结果不同会改变哪一步；
+- **比例**：它是否是当前证据下生命周期成本最低的应对。
 
-It fits the same hypothesis — optimising for not being blamed — but it is a
-different symptom, and none of the four letters covers it. It is catalogued here
-as a sibling, not folded in. Blurring the taxonomy is how a case catalogue stops
-being useful.
+前三项说不清时，不把它放进关键路径。“更稳妥”“更完整”“以后可能需要”只能说明一种偏好，不能证明当前要实现。
 
----
+### 2. 从“少做检查”改为“验证仍然活着的疑点”
 
-## The block
+一次真实冒烟测试可能比十页状态机说明更有价值；共享序列化格式改变后，相关消费者的广泛回归也可能完全合理。
 
-This is the part you paste into your agent's config. It is short on purpose.
+新规则要求先做能推翻当前实现的最小检查，再按影响范围扩大。它反对的是对未改动且已通过的内容重复验证，不是反对测试。
 
-```
-=== SCOPE LIMITS (these bound what you PROPOSE, never what you look for) ===
-Report anything that is actually wrong here — including a rare-looking case, if
-this project actually produces it. Then keep the fix in scope:
-1. This is not a security paper. Verification is welcome; over-defense is not.
-   Unless this project states otherwise, assume a cooperating operator on their
-   own machine; if it has a real adversary, it will say so and that scope wins.
-2. Do not add hashes, checksums or fingerprints unless the hash replaces a
-   materially more expensive operation AND its result changes what happens next.
-3. No defensive scaffolding: no feature flags, migration frameworks, compat
-   layers or wrappers for cases that do not occur here.
-4. No corner-case obsession: exotic encodings, symlink races, RTL text and
-   millisecond races are out of scope unless the case is reachable through this
-   project's supported use — its documented inputs, its published interface, its
-   real data. Reachable is enough; you do not need a reproduction. Constructible
-   in principle is not enough.
-5. Where judgement is needed, judge. Do not replace it with a scoring table, a
-   checklist, or a re-verification loop over something already settled.
-6. None of this overrides security, migration, verification or review that the
-   user, this project's own conventions, or a higher-priority rule asked for.
-   Those were requested; they are the work, not scope creep.
-Shapes already seen, for calibration. Examples, not a checklist — a real finding
-is not dismissed by resembling one:
-  H  hashing every row of two spreadsheets to answer what comparing cells answers
-  H  writing checksum files that nothing ever reads
-  E  hardening the accounts of an app that has no users and no deployment
-  R  auditing your own patch all night while the feature stays unwritten
-  R  a reviewer that returns a failing verdict on everything
-  O  guards whose justification is the previous guard, not the requirement
-And two that look like the above and are not. Report these:
-  ✓  a digest that lets you skip re-reading a large file you already have
-  ✓  a rare-looking input this project's own documentation example produces
-Before running any check, answer: what specific failure would this detect, and
-what would I do differently if it occurred? No answer means do not run it.
-Say plainly when something is correct. Do not manufacture findings.
-```
+### 3. 把完成主任务写成明确约束
 
-Chinese, same text:
+原文本主要约束“不要提议什么”，却没有充分约束执行顺序。新文本明确：实现任务在完成可交付结果和相称验证前，不应因为可选研究、重构、审计或加固而停住。
 
-```
-=== 范围约束(约束你提议什么修法,不约束你找什么)===
-凡是这里真的有问题,都要报——包括听起来罕见但本项目确实会产生的情况。
-然后把修法收在范围内:
-1. 这不是一篇安全攻防论文。可以校验,禁止过度防御。除非本项目另有说明,默认操作者是
-   自己机器上的合作者;如果它真有对手,它会写明,以那个范围为准。
-2. 不要加哈希/校验和/指纹,除非它替代了一个实质上更贵的操作,并且结果会改变下一步做什么。
-3. 禁止防御性脚手架:不为这里不会发生的情况加 feature flag、迁移框架、兼容层、包装层。
-4. 禁止钻牛角尖:冷门编码、符号链接竞态、RTL 文本、毫秒级竞态一律不在范围内,
-   除非该情况经由本项目**受支持的用法**可达——它的文档示例、它公开的接口、它真实的
-   数据。可达即可,不需要你复现出来;但"理论上构造得出"不算。
-5. 该判断的地方就判断,不要换成评分表、检查清单,或对已经定论的东西再跑一遍校验。
-6. 以上都不覆盖用户、本项目自己的约定、或更高优先级规则明确要求的安全、迁移、校验与
-   审阅。那些是被要求的,是活儿本身,不算范围外。
-已经见过的形状,供你校准。是例子不是清单——一个真问题不会因为"长得像其中一条"就被驳回:
-  H  为了比对两个表格的差异,给每一行都算哈希——直接比单元格就能回答
-  H  写下一堆校验和文件,而没有任何代码会去读它们
-  E  给一个没有用户、没有部署的应用做账号安全加固
-  R  用一整夜对自己的补丁反复审计,而功能一行没写
-  R  一个对任何提交都给不通过的审阅者
-  O  一层守卫的理由是上一层守卫,而不是需求
-另有两种长得像上面、但不是的。这些要报:
-  ✓  用摘要比对来跳过重读一个你已经有的大文件
-  ✓  本项目自己的文档示例就会产生的那种"听起来罕见"的输入
-跑任何检查之前先回答:这次运行会检测出什么具体的失败?真出现了我下一步会做什么不同的事?
-答不上来就别跑。
-对的就说对。不要为了交差硬找问题。
+这比提醒 Agent “别过度建设”更直接，因为它定义了什么可以进入关键路径。
+
+### 4. 长期目标必须分阶段
+
+“持续改进”“追求 SOTA”“达到顶刊标准”只能说明方向，不能告诉 Agent 什么时候该停止当前路线。没有阶段和停止条件时，Agent 很容易用新版本、更多验证和更多包装来证明自己仍在工作。
+
+每轮探索至少要有：一个可被推翻的假设、一个比较指标、当前轮次的资源边界，以及保留、回滚或停止条件。探索阶段复用同一实验记录；候选进入独立确认时再冻结；发布给真实消费者时再生成清单、哈希和完整复现包。
+
+### 5. 用户纠偏要锁存，而不是只听一句
+
+用户说“减少无效封装，只用已有数据，不要再下载”，不能只执行“不要下载”，然后继续生成同类冻结、清单和审计。最新、明确、具体的纠偏应在当前阶段覆盖更早的宽泛 Goal，并持续约束后续动作，直到目标或阶段再次改变。
+
+匿名长任务案例见 [`cases/research-governance-loop.md`](cases/research-governance-loop.md)，完整产品分析见 [`PRODUCT.md`](PRODUCT.md)。
+
+## 什么时候生效
+
+推荐按事件触发，不按分钟触发：
+
+| 事件 | 动作 | 是否对用户复述 |
+|---|---|---|
+| 新任务开始 | 建立一次主交付物和完成条件 | 通常不复述 |
+| 准备新增依赖、抽象、哈希/缓存、feature flag、迁移/兼容层、安全加固或宽范围测试 | 运行一次证据门 | 只有影响方案选择时说明 |
+| 辅助工作开始拖慢主交付 | 重新锚定并先完成最小完整切片 | 必要时说明取舍 |
+| 用户纠偏、改变目标、会话恢复或上下文压缩 | 更新当前任务合同并重新锚定一次 | 只说明改变后的目标或约束 |
+| 探索进入确认，或确认进入发布 | 更新阶段；重新判断冻结、哈希和验证是否必要 | 必要时说明阶段边界 |
+| 常规进度更新 | 正常报告进展 | 不复述 HERO |
+| 完成前 | 做一次与影响范围相称的验证 | 报告验证结果 |
+
+## 多久提醒一次
+
+推荐值不是“每 5 分钟”或“每 10 轮”，而是：
+
+- **定时提醒：0 次**；
+- **每个新任务：1 次静默锚定**；
+- **每个真实范围决策：最多触发 1 次证据门**；
+- **目标、阶段或明确约束改变，或恢复/压缩后：1 次重新锚定**。
+
+目前没有可靠证据支持某个固定分钟数最优。固定频率会在简单任务中制造无效上下文，在长命令运行时也不会提高决策质量。同一任务、阶段、决策类型和证据都没变时，不重复提醒；其中任何一项改变，才重新判断。
+
+## Hook 应该管什么
+
+Hook 适合拦截或记录可机器判断的动作，例如禁止某类联网命令、限制删除、记录重复创建的 `freeze` / `manifest` / `checksum` 文件，以及在恢复或上下文压缩后补回任务锚点。Codex 目前提供 `SessionStart`、`UserPromptSubmit`、`PreToolUse`、`PostToolUse`、`PostCompact` 和 `Stop` 等事件，插件也可以携带 Hook。具体能力见 OpenAI 官方 [Hooks 文档](https://learn.chatgpt.com/docs/hooks)。
+
+但过度防御最终仍是上下文判断：同一个哈希、兼容层或全量测试在一个项目里多余，在另一个项目里可能必要。部分托管工具也不经过相同 Hook 路径，所以 Hook 只是护栏，不是完整执行器。
+
+更合适的分工是：
+
+- 权限和 Hook 保护确定性限制、维护状态和提醒去重；
+- `AGENTS.md` 保持任务优先；
+- Skill 处理需要判断的范围决策；
+- 固定案例验证配置是否真的改善行为。
+
+## 安装
+
+### Codex / Antigravity
+
+把 [`AGENTS.md`](AGENTS.md) 的 `HERO-CONTRACT-START` 到 `HERO-CONTRACT-END` 放进目标项目根目录的 `AGENTS.md`。
+
+需要按需详细判断时，再复制 Skill：
+
+```bash
+mkdir -p .agents/skills
+cp -R /path/to/HERO-Anti-OverDefense-CN/.agents/skills/keep-task-in-scope .agents/skills/
 ```
 
----
+Skill 不是常驻规则的替代品。它只在复杂范围决策出现时补充流程。
 
-## The short version
+### 其他 Agent
 
-Same six rules, no worked examples — roughly half the size. Use it when your
-config file is already crowded, or when you want the rules without the shapes.
-The examples are the part that does the calibrating, so prefer the full block if
-you have the room.
+同一段常驻约束可以放进各工具自动读取的文件：
 
-To install it with the one-command form in the README, change the `awk` range to
-`/^=== SCOPE-LIMITS-SHORT/,/^Say plainly when something is correct/` — or
-`/^=== 精简范围约束/,/^对的就说对/` for the Chinese one. The `grep` guard needs no
-change: it already matches either variant, so you cannot end up with both.
+| 工具 | 文件 |
+|---|---|
+| Claude Code | `CLAUDE.md` |
+| GitHub Copilot | `.github/copilot-instructions.md` |
+| Cursor | `.cursor/rules/*.mdc`，旧项目可能使用 `.cursorrules` |
+| Windsurf | `.windsurfrules` |
+| Gemini CLI | `GEMINI.md` |
 
-```
-=== SCOPE-LIMITS-SHORT (bounds what you PROPOSE, never what you look for) ===
-Report anything actually wrong here, including a rare-looking case this project
-really produces. Then keep the fix in scope:
-1. Not a security paper: assume a cooperating operator on their own machine
-   unless this project says otherwise. Verification is welcome; over-defense is
-   not.
-2. No hash, checksum or fingerprint unless it replaces a materially more
-   expensive operation AND its result changes what happens next.
-3. No feature flags, migration frameworks, compat layers or wrappers for cases
-   that do not occur here.
-4. Exotic encodings, symlink races and millisecond races are out of scope unless
-   reachable through this project's supported use. Reachable is enough;
-   constructible in principle is not.
-5. Where judgement is needed, judge — not a scoring table, a checklist, or a
-   re-run of something already settled.
-6. None of this overrides security, migration, verification or review that the
-   user, this project's conventions, or a higher-priority rule asked for.
-Before any check: what specific failure would this detect, and what would I do
-differently if it occurred? No answer means do not run it.
-Say plainly when something is correct. Do not manufacture findings.
-```
+具体放置方式见 [`hosts/README.md`](hosts/README.md)。
 
-Chinese, same text:
+## 如何评估是否真的有效
 
-```
-=== 精简范围约束(约束你提议什么修法,不约束你找什么)===
-凡是这里真的有问题都要报——包括听起来罕见但本项目确实会产生的情况。
-然后把修法收在范围内:
-1. 这不是安全攻防论文:除非本项目另有说明,默认操作者是自己机器上的合作者。可以校验,
-   禁止过度防御。
-2. 不加哈希/校验和/指纹,除非它替代了一个实质上更贵的操作,并且结果会改变下一步。
-3. 不为这里不会发生的情况加 feature flag、迁移框架、兼容层、包装层。
-4. 冷门编码、符号链接竞态、毫秒级竞态不在范围内,除非经由本项目受支持的用法可达。
-   可达即可,"理论上构造得出"不算。
-5. 该判断的地方就判断,不要换成评分表、检查清单,或对已定论的东西再跑一遍。
-6. 以上都不覆盖用户、本项目约定、或更高优先级规则明确要求的安全、迁移、校验与审阅。
-跑任何检查前先回答:会检测出什么具体的失败?真出现了我会做什么不同的事?答不上来就别跑。
-对的就说对。不要为了交差硬找问题。
-```
+不要用“Agent 有没有提到 HERO”作为指标。那只证明它会复述。
 
----
+用同一组任务对比三种配置：
 
-## What you install
+1. 无 HERO；
+2. 只有短 `AGENTS.md`；
+3. 短 `AGENTS.md` + Skill。
 
-The block, and nothing else. There is no setting that points at `cases/`, no
-path to register, no flag to switch on. If you have pasted the block into the
-file your agent reads on every turn, you are done.
+从 [`cases/`](cases/README.md) 选择包含正例和反例的固定任务，检查：
 
-`cases/` is deliberately not loaded by your agent. It is roughly eight times the
-size of the block, and an agent carrying eighteen worked examples of *this is
-over-defense* starts matching real findings against them and dismissing the ones
-that rhyme — the exact failure this contract exists to prevent. The six one-line
-shapes inside the block are as much of the catalogue as belongs in a file read on
-every turn.
+- 用户要求的功能是否完成；
+- 真实可达的缺陷是否仍被发现；
+- 没有依据的辅助机制是否减少；
+- 验证是否覆盖活着的疑点和真实影响范围；
+- Agent 是否减少复述规则，而不是只换一种方式解释规则。
 
-The catalogue is for you, afterwards: when your agent insists some hardening is
-necessary and you think it is not, quote the entry by ID and ask how its proposal
-differs. See [how to use it](cases/README.md#how-to-use-this).
+至少同时包含“应该克制”和“应该扩大”的案例，否则很容易把少做误判为效果更好。
 
----
+## 边界
 
-## Where the line actually is
+这仍然是自然语言配置，不是强制执行器。更高优先级规则会覆盖它；同一份配置里更具体、更重的流程也可能压过这段通用约束。
 
-Three cuts do most of the work. They came out of arguing with the model about
-its own behaviour, and each of them corrected a rule that was wrong at first.
+如果项目确实要求审计链、版本化产物、兼容期或安全加固，要把**何时开始、适用于谁、什么条件结束**写具体。不能一边要求十二阶段流程，一边靠一句“只做必要检查”希望 Agent 自动删掉前者。
 
-**Find versus propose.** These limits bound the *fix*. Written as "do not report
-corner cases", this contract suppresses real bugs. One of the defects that
-motivated it was a scheduler hang triggered by a bare string where a list was
-expected — rare-sounding, except the project's own documentation example produced
-it, so every user following the docs hit it. The test is not *how rare does this
-sound*, it is *is this reachable here*.
-
-One honest qualification, because the block's own wording overstates it: the last
-line — *no answer means do not run it* — **does** bound the search, not just the
-fix. Verification is how some defects are found at all. The claim that survives is
-narrower and still worth making: nothing here licenses staying quiet about a
-defect you already have reason to suspect. If you can name the missing evidence
-and what its absence would cost, say so, and say what you would run to settle it.
-
-**Smoke versus theatre.** A smoke test is not over-defense; it is the cheapest
-contact with reality, and skipping it is how the worst bugs survive. But "cheap,
-so always do it" is the wrong rule: if the real run already exercises the same
-path, a separate smoke run is itself theatre. The usable test is the one in the
-block — *what would this detect, and what would I do differently*.
-
-That gate can be answered ritually — "it would detect a regression, and I would
-fix it" fits any check ever proposed. What makes an answer real is that it names
-an uncertainty that is still *live*: something you do not already know, that this
-run could actually settle. A first job surviving its first poll, when the polling
-code is exactly what is under suspicion, is live. Re-running a suite that passed
-an hour ago against code you did not touch is not.
-
-Read too literally, that gate also forbids the runs whose entire purpose is to
-find out *which* thing broke — change a shared serialization format and you
-genuinely cannot say in advance which consumer will fail. That run is
-proportionate: the uncertainty is real and bounded ("some consumer of this format
-may not survive it") and the outcome changes the next action, fix or roll back.
-Naming a bounded class of breakage is a good enough answer; only "it might catch
-something" is not. Scope the run to the consumers of what you changed, not to
-everything.
-
-**Hash as cache versus hash as evidence.** A flat ban on hashing is wrong, and
-the community said so: comparing digests to skip re-reading an unchanged file is
-a genuine saving. "Something reads it" is too weak a test, though — an agent that
-hashes every spreadsheet row *does* read those hashes, and the work is still
-absurd. What separates them is whether the hash replaced something more
-expensive.
-
----
-
-## What this does not do
-
-Be honest with yourself about the ceiling.
-
-**It helps; it is not a switch.** Asked in the original thread whether writing
-these rules in a markdown file actually works, the most-agreed answer was "it
-helps a little". That is the right expectation. Some runs will still fortify.
-
-**The model can decline.** There are reports of the agent replying that where
-these instructions conflict with a higher-priority system constraint, the system
-constraint still wins. This *is* configuration — but configuration by defeasible
-natural-language instruction, which a stronger instruction can override. It is
-not enforcement.
-
-**Model choice is also a lever.** Several reports describe switching to an
-earlier or different model and the problem simply going away. If a task is
-especially sensitive to this failure, that may be a more direct fix than any
-prompt.
-
-**This is not about making the agent do less work.** Every rule here is about
-spending the work on the thing that was asked for. The catalogue in
-[`cases/`](cases/) exists so that "that's over-defense" is a claim you can check
-against a specific, recognisable shape — not a way to wave away a finding you
-would rather not deal with.
+HERO 的目标不是少做，而是让工作量跟真实需求、真实风险和真实变化对应。
